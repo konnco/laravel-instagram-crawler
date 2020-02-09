@@ -3,6 +3,7 @@
 This package is designed to do simple Instagram Crawler in Laravel framework.
 
 This package based on this repository [Smochin/instagram-php-crawler](https://github.com/smochin/instagram-php-crawler).
+
 Because this package has not been updated for more than 2 years, we make a copy and do some changes about updated instagram's data.
 
 ***This package is still in alpha version, so the update may broke your application.***
@@ -27,19 +28,29 @@ composer require konnco/laravel-instagram-crawler
 $crawler = new Konnco\InstagramCrawler\InstagramCrawler();
 ```
 
+### Return the simple result from instagram (url, image url, comment count, and like count)
+```php
+$media = $crawler->getMediaByUser('instagram')->returnSimpleResult();
+```
+
+### Return the full result from instagram
+```php
+$media = $crawler->getMediaByUser('instagram')->returnFullResult();
+```
+
 ### Get a list of recently tagged media
 ```php
-$media = $crawler->getMediaByTag('php');
+$media = $crawler->getMediaByTag('php')->returnSimpleResult();
 ```
 
 ### Get a list of recent media from a given location
 ```php
-$media = $crawler->getMediaByLocation(225963881);
+$media = $crawler->getMediaByLocation(225963881)->returnSimpleResult();
 ```
 
 ### Get the most recent media published by a user
 ```php
-$media = $crawler->getMediaByUser('instagram');
+$media = $crawler->getMediaByUser('instagram')->returnSimpleResult();
 ```
 
 ### Get information about a media
@@ -65,16 +76,6 @@ $tag = $crawler->getTag('php');
 ### Search for hashtags, locations and users
 ```php
 $result = $crawler->search('recife');
-```
-
-### Return the simple result from instagram (url, image url, comment count, and like count)
-```php
-$media = $crawler->getMediaByUser('instagram')->returnSimpleResult();
-```
-
-### Return the full result from instagram
-```php
-$media = $crawler->getMediaByUser('instagram')->returnFullResult();
 ```
 
 ## Authors
