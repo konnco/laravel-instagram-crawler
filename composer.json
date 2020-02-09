@@ -1,0 +1,59 @@
+{
+    "name": "konnco/laravel-instagram-crawler",
+    "description": "Get your medias from instagram as easy as you can imagine.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+      "laravel",
+      "php",
+      "eloquent",
+      "library",
+      "instagram",
+      "crawl"
+    ],
+    "authors": [
+      {
+        "name": "Syah Rizal",
+        "email": "ijalnasution107@gmail.com"
+      }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+      "php": ">=7.2.0",
+      "illuminate/contracts": "5.8.* || ^6.0",
+      "illuminate/database": "5.8.* || ^6.0",
+      "illuminate/support": "5.8.* || ^6.0",
+      "ext-json": "*",
+      "guzzlehttp/guzzle": "^6.2"
+    },
+    "config": {
+      "sort-packages": true
+    },
+    "require-dev": {
+      "orchestra/testbench": "3.8.* || ^4.0",
+      "phpunit/phpunit": "^8.0"
+    },
+    "autoload": {
+      "psr-4": {
+        "Konnco\\InstagramCrawler\\": "src/"
+      }
+    },
+    "autoload-dev": {
+      "psr-4": {
+        "Konnco\\InstagramCrawler\\Tests\\": "tests/"
+      }
+    },
+    "extra": {
+      "laravel": {
+        "providers": [
+          "Konnco\\InstagramCrawler\\InstagramCrawlerServiceProvider"
+        ]
+      }
+    },
+    "scripts": {
+      "csfix": "php-cs-fixer fix --using-cache=no",
+      "test": "vendor/bin/phpunit",
+      "test-coverage": "vendor/bin/phpunit --coverage-html=build"
+    }
+  }
