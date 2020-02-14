@@ -80,6 +80,7 @@ $result = $crawler->search('recife');
 
 ## Authors
 [//]: contributor-faces
-<a href="https://github.com/ijalnasution">@ijalnasution</a>
+<a href="https://github.com/ijalnasution"><img src="https://avatars.githubusercontent.com/u/17308059?v=3" title="ijalnasution" width="80" height="80"></a>
+<a href="https://github.com/frankyso"><img src="https://avatars.githubusercontent.com/u/5705520?v=3" title="frankyso" width="80" height="80"></a>
 ## Contributing
 we appreciate all contributions, feel free to write some code or request package.
