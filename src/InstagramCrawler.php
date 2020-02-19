@@ -349,6 +349,20 @@ class InstagramCrawler
             $list[$key]['url'] = self::BASE_URI.sprintf(self::MEDIA_ENDPOINT, $result->getCode());
             $list[$key]['comments'] = $result->getCommentsCount();
             $list[$key]['likes'] = $result->getLikesCount();
+
+            // Tags
+            $tags = [];
+            foreach ($result->getTags() as $tag) {
+                array_push($tags, $tag->getName());
+            }
+
+            $list[$key]['tags'] = $tags;
+
+            if (get_class($result) === 'Konnco\InstagramCrawler\Model\Video') {
+                $list[$key]['type'] = 'video';
+            } else {
+                $list[$key]['type'] = 'photo';
+            }
         }
 
         return $list;
