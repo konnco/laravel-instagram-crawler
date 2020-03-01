@@ -23,4 +23,17 @@ class InstagramCrawlerTest extends \Orchestra\Testbench\TestCase
 
         $this->assertIsArray($media);
     }
+
+    /** @test */
+    public function testGetMediaByUsernameAndTag(): void
+    {
+        $crawler = new Crawler;
+        $media = $crawler->getMediaByTag('parlentgallant')->returnSimpleResult();
+        $username = 'parlentworld';
+        $media = collect($media)->filter(function($value) use ($username) {
+            return $value['username'] === $username;
+        })->toArray();
+
+        $this->assertIsArray($media);
+    }
 }

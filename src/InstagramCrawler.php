@@ -345,6 +345,7 @@ class InstagramCrawler
     {
         $list = [];
         foreach($this->result as $key => $result) {
+            $list[$key]['username'] = $result->getUser()->getUsername();
             $list[$key]['image_url'] = $result->getUrl();
             $list[$key]['url'] = self::BASE_URI.sprintf(self::MEDIA_ENDPOINT, $result->getCode());
             $list[$key]['comments'] = $result->getCommentsCount();
