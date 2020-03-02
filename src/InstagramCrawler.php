@@ -361,6 +361,7 @@ class InstagramCrawler
 
             if (get_class($result) === 'Konnco\InstagramCrawler\Model\Video') {
                 $list[$key]['type'] = 'video';
+                $list[$key]['thumb'] = $result->getThumb();
             } else {
                 $list[$key]['type'] = 'photo';
             }

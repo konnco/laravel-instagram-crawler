@@ -28,8 +28,8 @@ class InstagramCrawlerTest extends \Orchestra\Testbench\TestCase
     public function testGetMediaByUsernameAndTag(): void
     {
         $crawler = new Crawler;
-        $media = $crawler->getMediaByTag('parlentgallant')->returnSimpleResult();
-        $username = 'parlentworld';
+        $media = $crawler->getMediaByTag('Instanusantaradiy_701')->returnSimpleResult();
+        $username = 'ijalnst';
         $media = collect($media)->filter(function($value) use ($username) {
             return $value['username'] === $username;
         })->toArray();
