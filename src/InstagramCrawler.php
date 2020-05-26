@@ -69,7 +69,11 @@ class InstagramCrawler
             $nodeArrays[] = $node['node'];
         }
 
-        return $this->getMediaAsync(array_column($nodeArrays, 'shortcode'));
+        if (config('instagram.async', false) === true) {
+            return $this->getMediaAsync(array_column($nodeArrays, 'shortcode'));
+        }
+
+        return $this->getMedias($nodeArrays);
     }
 
     /**
@@ -86,7 +90,16 @@ class InstagramCrawler
         $response = $this->client->request('GET', sprintf(self::LOCATION_ENDPOINT, $id));
         $body = json_decode($response->getBody()->getContents(), true);
 
-        return $this->getMediaAsync(array_column($body['location']['media']['nodes'], 'code'));
+        if (config('instagram.async', false) === true) {
+            return $this->getMediaAsync(array_column($body['location']['media']['nodes'], 'code'));
+        }
+
+        $nodeArrays = [];
+        foreach ($body['graphql']['location']['edge_location_to_media']['edges'] as $index => $node) {
+            $nodeArrays[] = $node['node'];
+        }
+
+        return $this->getMedias($nodeArrays);
     }
 
     /**
@@ -108,7 +121,11 @@ class InstagramCrawler
             $nodeArrays[] = $node['node'];
         }
 
-        return $this->getMediaAsync(array_column($nodeArrays, 'shortcode'));
+        if (config('instagram.async', false) === true) {
+            return $this->getMediaAsync(array_column($nodeArrays, 'shortcode'));
+        }
+
+        return $this->getMedias($nodeArrays);
     }
 
     /**
@@ -140,6 +157,26 @@ class InstagramCrawler
         return $this;
     }
 
+
+    /**
+     * Get medias.
+     *
+     * @param array $medias A list of media
+     *
+     * @return array A list of media
+     */
+    private function getMedias(array $medias): InstagramCrawler
+    {
+        $list = [];
+        foreach ($medias as $media) {
+            $list[] = $this->loadMedia($media);
+        }
+
+        $this->result = $list;
+
+        return $this;
+    }
+
     /**
      * Get information about a media object.
      *
@@ -161,7 +198,7 @@ class InstagramCrawler
     {
         //var_dump($media['shortcode']);
         $location = null;
-        if ($media['location']) {
+        if (array_key_exists('location', $media)) {
             $location = LocationFactory::create(
                 (int) $media['location']['id'],
                 $media['location']['name'],
@@ -170,24 +207,24 @@ class InstagramCrawler
         }
         $user = UserFactory::create(
             (int) $media['owner']['id'],
-            $media['owner']['username'],
-            $media['owner']['profile_pic_url'],
-            $media['owner']['full_name'],
-            $media['owner']['is_private']
+            $media['owner']['username'] ?? '',
+            $media['owner']['profile_pic_url'] ?? '',
+            $media['owner']['full_name'] ?? '',
+            $media['owner']['is_private'] ?? false
         );
         if ($media['is_video']) {
             return MediaFactory::createVideo(
                 (int) $media['id'],
                 $media['shortcode'],
-                $media['video_url'],
+                $media['video_url'] ?? '',
                 $media['display_url'],
                 $media['video_view_count'],
                 $media['dimensions'],
                 $media['taken_at_timestamp'],
                 $user,
                 $media['edge_media_preview_like']['count'],
-                $media['edge_media_to_parent_comment']['count'],
-                $media['is_ad'],
+                $media['edge_media_to_comment']['count'] ?? 0,
+                $media['is_ad'] ?? false,
                 $media['edge_media_to_caption']['edges'][0]['node']['text'] ?? null,
                 $location
             );
@@ -201,8 +238,8 @@ class InstagramCrawler
             $media['taken_at_timestamp'],
             $user,
             $media['edge_media_preview_like']['count'],
-            $media['edge_media_to_parent_comment']['count'],
-            $media['is_ad'],
+            $media['edge_media_to_comment']['count'] ?? 0,
+            $media['is_ad'] ?? false,
             $media['edge_media_to_caption']['edges'][0]['node']['text'] ?? null,
             $location
         );
