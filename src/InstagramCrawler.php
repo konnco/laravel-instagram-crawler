@@ -201,8 +201,8 @@ class InstagramCrawler
         if (array_key_exists('location', $media)) {
             $location = LocationFactory::create(
                 (int) $media['location']['id'],
-                $media['location']['name'],
-                $media['location']['slug']
+                $media['location']['name'] ?? '',
+                $media['location']['slug'] ?? ''
             );
         }
         $user = UserFactory::create(
